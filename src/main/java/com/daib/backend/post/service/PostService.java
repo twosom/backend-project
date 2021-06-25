@@ -20,9 +20,9 @@ public class PostService {
     private final PostQueryRepository postQueryRepository;
     private final ModelMapper mapper;
 
-    public void createNewPost(PostForm postForm) {
+    public Long createNewPost(PostForm postForm) {
         Post post = mapper.map(postForm, Post.class);
-        postRepository.save(post);
+        return postRepository.save(post).getId();
     }
 
     public void editPost(PostEditForm postEditForm, Long postId) {

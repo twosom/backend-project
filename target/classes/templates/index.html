@@ -1,8 +1,33 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org">
+<html xmlns:th="http://www.thymeleaf.org"
+      xmlns:sd="http://www.thymeleaf.org/spring-data">
 <head th:replace="fragment.html::head"></head>
 <body>
+<div class="container">
 
+    <table class="table mt-5">
+        <thead>
+        <tr>
+            <th scope="col">제목</th>
+            <th scope="col">작성자</th>
+            <th scope="col">작성일</th>
+        </tr>
+        </thead>
+        <tbody>
+        <tr th:each="post : ${postList}">
+            <td>
+                <a class="text-decoration-none" href="#" th:href="@{/post/{id}(id=${post.id})}">
+                    <span th:text="${post.title}"></span>
+                </a>
+            </td>
+            <td th:text="${post.writer}"></td>
+            <td th:text="${#temporals.format(post.createdAt, 'yyyy-MM-dd hh:mm:ss')}"></td>
+        </tr>
+        </tbody>
+    </table>
+    <a href="#" th:href="@{/post/new}" class="btn btn-primary">새 게시글 작성</a>
+</div>
+<footer th:replace="fragment.html::pagenav"></footer>
 </body>
 <script th:replace="fragment.html::uiScript"></script>
 </html>
