@@ -2,6 +2,7 @@ package com.daib.backend.domain.board;
 
 import static com.querydsl.core.types.PathMetadataFactory.*;
 
+import com.daib.backend.comment.domain.Comment;
 import com.querydsl.core.types.dsl.*;
 
 import com.querydsl.core.types.PathMetadata;
