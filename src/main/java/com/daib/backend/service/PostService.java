@@ -1,6 +1,7 @@
 package com.daib.backend.service;
 
 import com.daib.backend.domain.board.Post;
+import com.daib.backend.form.PostEditForm;
 import com.daib.backend.form.PostForm;
 import com.daib.backend.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,5 +20,10 @@ public class PostService {
     public void createNewPost(PostForm postForm) {
         Post post = mapper.map(postForm, Post.class);
         postRepository.save(post);
+    }
+
+    public void editPost(PostEditForm postEditForm, Long postId) {
+        Post findPost = postRepository.findById(postId).get();
+        mapper.map(postEditForm, findPost);
     }
 }
