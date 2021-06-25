@@ -120,4 +120,21 @@ class PostControllerTest {
                 .andExpect(view().name("post/edit-post"));
     }
 
+
+    @DisplayName("게시글 조회")
+    @Test
+    void view_post() throws Exception {
+        //TODO 예외 만들고 나서 조회 실패 테스트도 하기
+        create_new_post_with_correct_value();
+        List<Post> postList = postRepository.findAll();
+        assertEquals(postList.size(), 1);
+        Post post = postList.get(0);
+
+        mockMvc.perform(get("/post/{id}", post.getId()))
+                .andExpect(status().isOk())
+                .andExpect(model().attributeExists("postViewDto"))
+                .andExpect(view().name("post/view-post"));
+
+    }
+
 }
