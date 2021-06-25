@@ -34,7 +34,8 @@ public class CommentService {
 
     public Long deleteComment(Long id) {
         Comment comment = commentRepository.findById(id).get();
-        commentRepository.delete(comment);
+        //댓글 내용만 삭제하도록
+        comment.setContent(null);
         return comment.getPost().getId();
     }
 }
