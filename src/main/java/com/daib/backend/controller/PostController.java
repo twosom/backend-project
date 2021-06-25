@@ -1,6 +1,7 @@
 package com.daib.backend.controller;
 
 import com.daib.backend.domain.board.Post;
+import com.daib.backend.dto.PostViewDto;
 import com.daib.backend.form.PostEditForm;
 import com.daib.backend.form.PostForm;
 import com.daib.backend.service.PostService;
@@ -38,6 +39,16 @@ public class PostController {
     public void postEditFormInitBinder(WebDataBinder webDataBinder) {
         webDataBinder.addValidators(postEditFormValidator);
     }
+
+
+    @GetMapping("/post/{id}")
+    public String viewPost(@PathVariable("id") Post post, Model model) {
+        //TODO 없는 id 입력 시 예외 처리
+        model.addAttribute(modelMapper.map(post, PostViewDto.class));
+        return "post/view-post";
+    }
+
+
 
     @GetMapping("/post/new")
     public String createNewPostForm(Model model) {
@@ -80,6 +91,6 @@ public class PostController {
 
         postService.editPost(postEditForm, id);
         redirectAttributes.addFlashAttribute("message", "게시글 수정이 완료되었습니다.");
-        return "redirect:/";
+        return "redirect:/post/" + id;
     }
 }
