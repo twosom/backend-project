@@ -76,6 +76,13 @@
             <artifactId>querydsl-jpa</artifactId>
         </dependency>
 
+        <dependency>
+            <groupId>io.github.jpenren</groupId>
+            <artifactId>thymeleaf-spring-data-dialect</artifactId>
+            <version>3.4.1</version>
+        </dependency>
+
+
 
 
 

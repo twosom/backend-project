@@ -1,8 +1,13 @@
 spring:
   jpa:
     hibernate:
-      ddl-auto: update
+      ddl-auto: create-drop
   mvc:
     hiddenmethod:
       filter:
         enabled: true
+
+  data:
+    web:
+      pageable:
+        default-page-size: 10
