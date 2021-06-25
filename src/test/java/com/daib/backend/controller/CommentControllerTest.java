@@ -138,6 +138,24 @@ class CommentControllerTest {
                 .andExpect(view().name("comment/edit-comment"));
     }
 
+    @DisplayName("댓글 삭제")
+    @Test
+    void delete_comment() throws Exception {
+        create_new_comment_with_correct_value();
+        List<Comment> commentList = commentRepository.findAll();
+        assertEquals(commentList.size(), 1);
+        Comment comment = commentList.get(0);
+        assertNotNull(comment);
+
+
+        mockMvc.perform(delete("/comment/delete/{id}", comment.getId()))
+                .andExpect(status().is3xxRedirection());
+
+        commentList = commentRepository.findAll();
+        assertEquals(commentList.size(), 0);
+
+    }
+
 
 
 }
