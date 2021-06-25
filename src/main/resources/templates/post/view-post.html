@@ -54,8 +54,11 @@
                        th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd hh:mm:ss') + '에 작성됨'}"></p>
                     <textarea class="card-text form-control" th:text="${comment.content}" readonly></textarea>
                     <div class="text-end">
-                        <a class="btn btn-primary mt-2" href="#" th:href="@{/comment/edit/{id}(id=${comment.id})}">수정하기</a>
-                        <a class="btn btn-danger mt-2" href="#">삭제하기</a>
+                        <a class="btn btn-primary mt-2" href="#"
+                           th:href="@{/comment/edit/{id}(id=${comment.id})}">수정하기</a>
+                        <form th:method="delete" action="#" th:action="@{/comment/delete/{id}(id=${comment.id})}">
+                            <button type="submit" class="btn btn-danger mt-2">삭제하기</button>
+                        </form>
                     </div>
                     <hr/>
                 </ul>
