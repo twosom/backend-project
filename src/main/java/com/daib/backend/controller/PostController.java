@@ -2,6 +2,7 @@ package com.daib.backend.controller;
 
 import com.daib.backend.domain.board.Post;
 import com.daib.backend.dto.PostViewDto;
+import com.daib.backend.form.CommentForm;
 import com.daib.backend.form.PostEditForm;
 import com.daib.backend.form.PostForm;
 import com.daib.backend.service.PostService;
@@ -45,6 +46,7 @@ public class PostController {
     public String viewPost(@PathVariable("id") Post post, Model model) {
         //TODO 없는 id 입력 시 예외 처리
         model.addAttribute(modelMapper.map(post, PostViewDto.class));
+        model.addAttribute(new CommentForm());
         return "post/view-post";
     }
 

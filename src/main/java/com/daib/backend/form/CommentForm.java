@@ -7,25 +7,19 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostForm {
+public class CommentForm {
 
 
-    @NotBlank
-    private String title;
-
-    @NotBlank
-    private String content;
+    private Long postId;
 
     @NotBlank
     private String writer;
 
     @NotBlank
-    private String password;
-
+    private String content;
 
 }

@@ -92,7 +92,7 @@ class PostControllerTest {
                         .param("writer", "anonymous")
                         .param("password", post.getPassword()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"))
+                .andExpect(redirectedUrl("/post/" + post.getId()))
                 .andExpect(flash().attributeExists("message"));
         assertEquals(post.getTitle(), "edited-title");
 
