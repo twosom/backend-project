@@ -1,7 +1,6 @@
 package com.daib.backend.repository;
 
-import com.daib.backend.domain.board.QComment;
-import com.daib.backend.domain.board.QPost;
+
 import com.daib.backend.dto.CommentViewDto;
 import com.daib.backend.dto.PostViewDto;
 import com.querydsl.core.types.Projections;

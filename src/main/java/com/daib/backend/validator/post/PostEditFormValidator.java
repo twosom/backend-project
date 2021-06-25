@@ -25,7 +25,14 @@ public class PostEditFormValidator implements Validator {
     @Override
     public void validate(Object o, Errors errors) {
         PostEditForm form = (PostEditForm) o;
+
+        if (!postRepository.existsById(form.getId())) {
+            errors.rejectValue("title", "wrong.request", "잘못된 요청입니다.");
+        }
+
+
         Post findPost = postRepository.findById(form.getId()).get();
+
 
         if (!findPost.getPassword().equals(form.getPassword())) {
             errors.rejectValue("password", "wrong.password", "비밀번호가 일치하지 않습니다.");
