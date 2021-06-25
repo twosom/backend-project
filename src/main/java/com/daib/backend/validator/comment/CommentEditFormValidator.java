@@ -1,6 +1,6 @@
 package com.daib.backend.validator.comment;
 
-import com.daib.backend.form.CommentEditForm;
+import com.daib.backend.form.comment.CommentEditForm;
 import com.daib.backend.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;

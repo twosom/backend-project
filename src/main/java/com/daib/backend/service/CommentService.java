@@ -2,8 +2,8 @@ package com.daib.backend.service;
 
 import com.daib.backend.domain.board.Comment;
 import com.daib.backend.domain.board.Post;
-import com.daib.backend.form.CommentEditForm;
-import com.daib.backend.form.CommentForm;
+import com.daib.backend.form.comment.CommentEditForm;
+import com.daib.backend.form.comment.CommentForm;
 import com.daib.backend.repository.CommentRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

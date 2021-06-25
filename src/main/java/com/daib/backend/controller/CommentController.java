@@ -3,8 +3,8 @@ package com.daib.backend.controller;
 import com.daib.backend.domain.board.Comment;
 import com.daib.backend.domain.board.Post;
 import com.daib.backend.dto.PostViewDto;
-import com.daib.backend.form.CommentEditForm;
-import com.daib.backend.form.CommentForm;
+import com.daib.backend.form.comment.CommentEditForm;
+import com.daib.backend.form.comment.CommentForm;
 import com.daib.backend.repository.PostRepository;
 import com.daib.backend.service.CommentService;
 import com.daib.backend.validator.comment.CommentEditFormValidator;
@@ -49,7 +49,7 @@ public class CommentController {
     @PostMapping("/comment/new")
     public String createNewComment(@Valid CommentForm commentForm, Errors errors, Model model) {
         if (errors.hasErrors()) {
-            Post post = postRepository.findById(commentForm.getPostId()).get();
+            Post post = postRepository.findById(commentForm.getPostId()).orElse(new Post());
             model.addAttribute(modelMapper.map(post, PostViewDto.class));
             return "post/view-post";
         }

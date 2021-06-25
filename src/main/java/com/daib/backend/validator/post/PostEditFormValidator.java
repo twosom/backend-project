@@ -1,8 +1,7 @@
 package com.daib.backend.validator.post;
 
 import com.daib.backend.domain.board.Post;
-import com.daib.backend.form.PostEditForm;
-import com.daib.backend.form.PostForm;
+import com.daib.backend.form.post.PostEditForm;
 import com.daib.backend.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Component;
