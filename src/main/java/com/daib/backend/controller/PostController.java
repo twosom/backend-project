@@ -43,9 +43,10 @@ public class PostController {
 
 
     @GetMapping("/post/{id}")
-    public String viewPost(@PathVariable("id") Post post, Model model) {
+    public String viewPost(@PathVariable("id") Long id, Model model) {
         //TODO 없는 id 입력 시 예외 처리
-        model.addAttribute(modelMapper.map(post, PostViewDto.class));
+        PostViewDto postViewDto = postService.getPost(id);
+        model.addAttribute(postViewDto);
         model.addAttribute(new CommentForm());
         return "post/view-post";
     }

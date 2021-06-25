@@ -45,6 +45,22 @@
                 </form>
             </div>
         </div>
+
+        <div class="card">
+            <div class="card-body">
+                <ul th:each="comment : ${postViewDto.commentList}">
+                    <p class="card-title" th:text="${comment.writer}">댓글 작성자</p>
+                    <p class="card-text text-end"
+                       th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd hh:mm:ss') + '에 작성됨'}"></p>
+                    <textarea class="card-text form-control" th:text="${comment.content}" readonly></textarea>
+                    <div class="text-end">
+                        <a class="btn btn-primary mt-2" href="#" th:href="@{/comment/edit/{id}(id=${comment.id})}">수정하기</a>
+                        <a class="btn btn-danger mt-2" href="#">삭제하기</a>
+                    </div>
+                    <hr/>
+                </ul>
+            </div>
+        </div>
     </div>
 </div>
 
