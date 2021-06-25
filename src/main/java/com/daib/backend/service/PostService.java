@@ -2,8 +2,8 @@ package com.daib.backend.service;
 
 import com.daib.backend.domain.board.Post;
 import com.daib.backend.dto.PostViewDto;
-import com.daib.backend.form.PostEditForm;
-import com.daib.backend.form.PostForm;
+import com.daib.backend.form.post.PostEditForm;
+import com.daib.backend.form.post.PostForm;
 import com.daib.backend.repository.PostQueryRepository;
 import com.daib.backend.repository.PostRepository;
 import lombok.RequiredArgsConstructor;

@@ -2,7 +2,7 @@ package com.daib.backend.controller;
 
 import com.daib.backend.domain.board.Comment;
 import com.daib.backend.domain.board.Post;
-import com.daib.backend.form.PostForm;
+import com.daib.backend.form.post.PostForm;
 import com.daib.backend.repository.CommentRepository;
 import com.daib.backend.repository.PostRepository;
 import com.daib.backend.service.PostService;
@@ -19,8 +19,7 @@ import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.redirectedUrl;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @SpringBootTest
 @AutoConfigureMockMvc
@@ -82,5 +81,63 @@ class CommentControllerTest {
         assertEquals(comment.getWriter(), "another anonymous");
         assertEquals(comment.getContent(), "test comment");
     }
+
+    @DisplayName("댓글 추가 - 실패")
+    @Test
+    void create_new_comment_with_wrong_value() throws Exception {
+
+        List<Post> postList = postRepository.findAll();
+        Post post = postList.get(0);
+        assertNotNull(post);
+
+
+        mockMvc.perform(
+                post("/comment/new")
+                        .param("postId", "4")
+                        .param("writer", "another anonymous")
+                        .param("content", "test comment"))
+                .andExpect(status().isOk())
+                .andExpect(view().name("post/view-post"))
+                .andExpect(model().hasErrors());
+    }
+
+    @DisplayName("댓글 수정 - 성공")
+    @Test
+    void edit_comment_with_correct_value() throws Exception {
+        create_new_comment_with_correct_value();
+        List<Comment> commentList = commentRepository.findAll();
+        assertEquals(commentList.size(), 1);
+        Comment comment = commentList.get(0);
+        assertNotNull(comment);
+
+
+        mockMvc.perform(post("/comment/edit/{id}", comment.getId())
+                .param("id", comment.getId().toString())
+                .param("writer", "another anonymous")
+                .param("content", "edited content"))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/post/" + comment.getPost().getId()));
+    }
+
+    @DisplayName("댓글 수정 - 실패")
+    @Test
+    void edit_comment_with_wrong_value() throws Exception {
+        create_new_comment_with_correct_value();
+        List<Comment> commentList = commentRepository.findAll();
+        assertEquals(commentList.size(), 1);
+        Comment comment = commentList.get(0);
+        assertNotNull(comment);
+
+
+        mockMvc.perform(post("/comment/edit/{id}", comment.getId())
+                .param("id", "123")
+                .param("writer", "another anonymous")
+                .param("content", "edited content"))
+                .andExpect(status().isOk())
+                .andExpect(model().hasErrors())
+                .andExpect(view().name("comment/edit-comment"));
+    }
+
+
 
 }

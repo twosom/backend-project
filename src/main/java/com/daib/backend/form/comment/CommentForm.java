@@ -1,4 +1,4 @@
-package com.daib.backend.form;
+package com.daib.backend.form.comment;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -11,13 +11,15 @@ import javax.validation.constraints.NotBlank;
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class CommentEditForm {
+public class CommentForm {
 
-    private Long id;
+
+    private Long postId;
 
     @NotBlank
     private String writer;
 
     @NotBlank
     private String content;
+
 }

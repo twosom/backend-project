@@ -1,4 +1,4 @@
-package com.daib.backend.form;
+package com.daib.backend.form.post;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
@@ -7,13 +7,14 @@ import lombok.NoArgsConstructor;
 
 import javax.validation.constraints.NotBlank;
 
-
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
 @Builder
-public class PostForm {
+public class PostEditForm {
 
+
+    private Long id;
 
     @NotBlank
     private String title;
@@ -26,6 +27,5 @@ public class PostForm {
 
     @NotBlank
     private String password;
-
 
 }

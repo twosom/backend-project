@@ -2,9 +2,9 @@ package com.daib.backend.controller;
 
 import com.daib.backend.domain.board.Post;
 import com.daib.backend.dto.PostViewDto;
-import com.daib.backend.form.CommentForm;
-import com.daib.backend.form.PostEditForm;
-import com.daib.backend.form.PostForm;
+import com.daib.backend.form.comment.CommentForm;
+import com.daib.backend.form.post.PostEditForm;
+import com.daib.backend.form.post.PostForm;
 import com.daib.backend.service.PostService;
 import com.daib.backend.validator.post.PostEditFormValidator;
 import com.daib.backend.validator.post.PostFormValidator;
