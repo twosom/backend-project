@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head th:replace="fragment.html::head"></head>
+<body class="bg-light">
+<div class="container">
+    <div class="row mt-5">
+        <div class="card">
+            <div class="card-body mt-5">
+
+                <h2 class="card-title mb-5">댓글 수정</h2>
+                <form action="#" th:action="@{/comment/edit/{id}(id=${commentEditForm.id})}" method="post"
+                      th:object="${commentEditForm}">
+
+                    <div class="row d-flex justify-content-end">
+                        <div class="col-3">
+                            <div class="form-group">
+                                <label for="writer" class="form-label">작성자</label>
+                                <input id="writer" type="text" class="form-control" placeholder="작성자"
+                                       th:field="*{writer}" required>
+                                <small class="form-text text-danger" th:if="${#fields.hasErrors('writer')}"
+                                       th:errors="*{writer}"></small>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form-group mb-2">
+                        <label for="content" class="form-label">내용을 입력해주세요.</label>
+                        <textarea id="content" class="form-control" placeholder="내용을 입력해주세요." th:field="*{content}"
+                                  required></textarea>
+                        <small class="form-text text-danger" th:if="${#fields.hasErrors('content')}"
+                               th:errors="*{content}"></small>
+                    </div>
+
+                    <div class="form-group">
+                        <button type="submit" class="btn btn-primary">수정하기</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+</body>
+<script th:replace="fragment.html::uiScript"></script>
+</html>
