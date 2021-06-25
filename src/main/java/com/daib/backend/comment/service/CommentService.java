@@ -1,6 +1,7 @@
 package com.daib.backend.comment.service;
 
 import com.daib.backend.comment.domain.Comment;
+import com.daib.backend.comment.exception.CommentNotFoundException;
 import com.daib.backend.post.domain.Post;
 import com.daib.backend.comment.form.CommentEditForm;
 import com.daib.backend.comment.form.CommentForm;
@@ -27,15 +28,24 @@ public class CommentService {
     }
 
     public Long editComment(CommentEditForm commentEditForm, Long id) {
-        Comment comment = commentRepository.findById(id).get();
+        Comment comment = getCommentAndValidate(id);
         modelMapper.map(commentEditForm, comment);
         return comment.getPost().getId();
     }
 
     public Long deleteComment(Long id) {
-        Comment comment = commentRepository.findById(id).get();
-        //댓글 내용만 삭제하도록
+        Comment comment = getCommentAndValidate(id);
         comment.setContent(null);
         return comment.getPost().getId();
+    }
+
+    private Comment getCommentAndValidate(Long id) {
+        return commentRepository.findById(id)
+                .orElseThrow(() -> new CommentNotFoundException(id + "에 해당하는 댓글이 존재하지 않습니다."));
+    }
+
+    public CommentEditForm getCommentEditForm(Long id) {
+        Comment comment = getCommentAndValidate(id);
+        return modelMapper.map(comment, CommentEditForm.class);
     }
 }

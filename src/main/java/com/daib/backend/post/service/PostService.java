@@ -2,6 +2,7 @@ package com.daib.backend.post.service;
 
 import com.daib.backend.post.domain.Post;
 import com.daib.backend.post.dto.PostViewDto;
+import com.daib.backend.post.exception.PostNotFoundException;
 import com.daib.backend.post.form.PostEditForm;
 import com.daib.backend.post.form.PostForm;
 import com.daib.backend.post.repository.PostQueryRepository;
@@ -26,7 +27,7 @@ public class PostService {
     }
 
     public void editPost(PostEditForm postEditForm, Long postId) {
-        Post findPost = postRepository.findById(postId).get();
+        Post findPost = getPostAndValidate(postId);
         mapper.map(postEditForm, findPost);
     }
 
@@ -35,7 +36,17 @@ public class PostService {
     }
 
     public void removePost(Long id) {
-        Post post = postRepository.findById(id).get();
+        Post post = getPostAndValidate(id);
         post.setContent(null);
+    }
+
+    public PostEditForm getPostEditForm(Long id) {
+        Post post = getPostAndValidate(id);
+        return mapper.map(post, PostEditForm.class);
+    }
+
+    private Post getPostAndValidate(Long id) {
+        return postRepository.findById(id)
+                .orElseThrow(() -> new PostNotFoundException(id + "에 해당하는 게시글이 존재하지 않습니다."));
     }
 }

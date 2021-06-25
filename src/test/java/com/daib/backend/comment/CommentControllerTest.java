@@ -41,6 +41,8 @@ class CommentControllerTest {
 
     @BeforeEach
     void beforeEach() {
+        commentRepository.deleteAll();
+        postRepository.deleteAll();
         PostForm postForm = PostForm.builder()
                 .title("test title")
                 .writer("anonymous")

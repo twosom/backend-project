@@ -1,8 +1,7 @@
 package com.daib.backend.post.controller;
 
-import com.daib.backend.post.domain.Post;
-import com.daib.backend.post.dto.PostViewDto;
 import com.daib.backend.comment.form.CommentForm;
+import com.daib.backend.post.dto.PostViewDto;
 import com.daib.backend.post.form.PostEditForm;
 import com.daib.backend.post.form.PostForm;
 import com.daib.backend.post.service.PostService;
@@ -15,7 +14,6 @@ import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import javax.validation.Valid;
 
@@ -41,7 +39,6 @@ public class PostController {
 
     @GetMapping("/post/{id}")
     public String viewPost(@PathVariable("id") Long id, Model model) {
-        //TODO 없는 id 입력 시 예외 처리
         PostViewDto postViewDto = postService.getPost(id);
         model.addAttribute(postViewDto);
         model.addAttribute(new CommentForm());
@@ -59,44 +56,38 @@ public class PostController {
 
     @PostMapping("/post/new")
     public String createNewPost(@Valid PostForm postForm,
-                                Errors errors,
-                                RedirectAttributes redirectAttributes) {
+                                Errors errors) {
 
         if (errors.hasErrors()) {
             return "post/new-post";
         }
 
-        postService.createNewPost(postForm);
-        redirectAttributes.addFlashAttribute("message", "게시글 작성이 완료되었습니다.");
-        return "redirect:/";
+        Long postId = postService.createNewPost(postForm);
+        return "redirect:/post/" + postId;
     }
 
 
     @GetMapping("/post/edit/{id}")
-    public String editPostForm(@PathVariable("id") Post post, Model model) {
-        //TODO 없는 id 입력 시 예외 처리
-        model.addAttribute(modelMapper.map(post, PostEditForm.class));
+    public String editPostForm(@PathVariable("id") Long id, Model model) {
+        PostEditForm postEditForm = postService.getPostEditForm(id);
+        model.addAttribute(postEditForm);
         return "post/edit-post";
     }
 
     @PostMapping("/post/edit/{id}")
     public String editPost(@PathVariable("id") Long id,
                            @Valid PostEditForm postEditForm,
-                           Errors errors,
-                           RedirectAttributes redirectAttributes) {
-        //TODO 없는 id 입력 시 예외 처리
+                           Errors errors) {
         if (errors.hasErrors()) {
             return "post/edit-post";
         }
 
         postService.editPost(postEditForm, id);
-        redirectAttributes.addFlashAttribute("message", "게시글 수정이 완료되었습니다.");
         return "redirect:/post/" + id;
     }
 
     @DeleteMapping("/post/delete/{id}")
     public String deletePost(@PathVariable("id") Long id) {
-        //TODO 없는 id 일 때 예외 처리
         postService.removePost(id);
         return "redirect:/";
     }

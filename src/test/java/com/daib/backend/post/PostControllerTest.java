@@ -1,8 +1,10 @@
 package com.daib.backend.post;
 
+import com.daib.backend.comment.repository.CommentRepository;
 import com.daib.backend.post.domain.Post;
 import com.daib.backend.post.repository.PostRepository;
 import org.junit.jupiter.api.AfterEach;
+import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,6 +30,14 @@ class PostControllerTest {
     @Autowired
     PostRepository postRepository;
 
+    @Autowired
+    CommentRepository commentRepository;
+
+    @BeforeEach
+    void beforeEach() {
+        commentRepository.deleteAll();
+        postRepository.deleteAll();
+    }
 
     @AfterEach
     void afterEach() {
@@ -38,16 +48,13 @@ class PostControllerTest {
     @DisplayName("신규 포스트 작성_성공")
     @Test
     void create_new_post_with_correct_value() throws Exception {
-
         mockMvc.perform(
                 post("/post/new")
                         .param("title", "new post")
                         .param("content", "new content")
                         .param("writer", "anonymous")
                         .param("password", "11111111"))
-                .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/"))
-                .andExpect(flash().attributeExists("message"));
+                .andExpect(status().is3xxRedirection());
 
         List<Post> postList = postRepository.findAll();
         assertEquals(postList.size(), 1);
@@ -92,8 +99,7 @@ class PostControllerTest {
                         .param("writer", "anonymous")
                         .param("password", post.getPassword()))
                 .andExpect(status().is3xxRedirection())
-                .andExpect(redirectedUrl("/post/" + post.getId()))
-                .andExpect(flash().attributeExists("message"));
+                .andExpect(redirectedUrl("/post/" + post.getId()));
         assertEquals(post.getTitle(), "edited-title");
 
     }
