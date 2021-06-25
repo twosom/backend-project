@@ -15,10 +15,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.InitBinder;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
 
@@ -72,6 +69,14 @@ public class CommentController {
         }
 
         Long postId = commentService.editComment(commentEditForm, id);
+        return "redirect:/post/" + postId;
+    }
+
+    @DeleteMapping("/comment/delete/{id}")
+    public String deleteComment(@PathVariable("id") Long id) {
+        //TODO 없는 id 일 때 예외처리
+        Long postId = commentService.deleteComment(id);
+
         return "redirect:/post/" + postId;
     }
 

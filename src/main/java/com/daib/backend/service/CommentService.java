@@ -31,4 +31,10 @@ public class CommentService {
         modelMapper.map(commentEditForm, comment);
         return comment.getPost().getId();
     }
+
+    public Long deleteComment(Long id) {
+        Comment comment = commentRepository.findById(id).get();
+        commentRepository.delete(comment);
+        return comment.getPost().getId();
+    }
 }
