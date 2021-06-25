@@ -56,9 +56,9 @@ public class CommentController {
     }
 
     @GetMapping("/comment/edit/{id}")
-    public String editCommentForm(@PathVariable("id") Comment comment, Model model) {
-        //TODO 해당 comment 없으면 예외처리
-        model.addAttribute(modelMapper.map(comment, CommentEditForm.class));
+    public String editCommentForm(@PathVariable("id") Long id, Model model) {
+        CommentEditForm commentEditForm = commentService.getCommentEditForm(id);
+        model.addAttribute(commentEditForm);
         return "comment/edit-comment";
     }
 
@@ -74,7 +74,6 @@ public class CommentController {
 
     @DeleteMapping("/comment/delete/{id}")
     public String deleteComment(@PathVariable("id") Long id) {
-        //TODO 없는 id 일 때 예외처리
         Long postId = commentService.deleteComment(id);
 
         return "redirect:/post/" + postId;

@@ -5,6 +5,7 @@ import com.daib.backend.comment.dto.CommentViewDto;
 import com.daib.backend.post.domain.Post;
 import com.daib.backend.post.dto.PostListDto;
 import com.daib.backend.post.dto.PostViewDto;
+import com.daib.backend.post.exception.PostNotFoundException;
 import com.querydsl.core.types.Projections;
 import com.querydsl.jpa.impl.JPAQuery;
 import com.querydsl.jpa.impl.JPAQueryFactory;
@@ -32,16 +33,22 @@ public class PostQueryRepository {
 
 
     public PostViewDto findPostWithCommentById(Long id) {
-        //TODO 조회되지 않으면 예외처리 하기
-        PostViewDto postViewDto = queryFactory.select(Projections.fields(PostViewDto.class,
+        List<PostViewDto> postList = queryFactory.select(Projections.fields(PostViewDto.class,
                 post.id,
                 post.title,
                 post.content,
                 post.writer,
                 post.createdAt))
                 .from(post)
-                .where(post.id.eq(id))
-                .fetchOne();
+                .where(post.id.eq(id).and(post.content.isNotNull()))
+                .fetch();
+
+        if (postList.size() == 0) {
+            throw new PostNotFoundException(id + "에 해당하는 게시글이 존재하지 않습니다.");
+        }
+
+        PostViewDto postViewDto = postList.get(0);
+
 
         List<CommentViewDto> commentList = queryFactory.select(Projections.fields(CommentViewDto.class,
                 comment.id,
