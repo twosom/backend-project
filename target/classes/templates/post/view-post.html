@@ -52,11 +52,12 @@
                     <p class="card-title" th:text="${comment.writer}">댓글 작성자</p>
                     <p class="card-text text-end"
                        th:text="${#temporals.format(comment.createdAt, 'yyyy-MM-dd hh:mm:ss') + '에 작성됨'}"></p>
-                    <textarea class="card-text form-control" th:text="${comment.content}" readonly></textarea>
-                    <div class="text-end">
-                        <a class="btn btn-primary mt-2" href="#"
-                           th:href="@{/comment/edit/{id}(id=${comment.id})}">수정하기</a>
-                        <form th:method="delete" action="#" th:action="@{/comment/delete/{id}(id=${comment.id})}">
+                    <textarea class="card-text form-control"
+                              th:text="${comment.content == null ? '삭제된 댓글입니다.' : comment.content}" readonly></textarea>
+                    <div class="text-end" th:if="${comment.content != null}">
+                        <form class="form-inline" th:method="delete" action="#" th:action="@{/comment/delete/{id}(id=${comment.id})}">
+                            <a class="btn btn-primary mt-2" href="#"
+                               th:href="@{/comment/edit/{id}(id=${comment.id})}">수정하기</a>
                             <button type="submit" class="btn btn-danger mt-2">삭제하기</button>
                         </form>
                     </div>

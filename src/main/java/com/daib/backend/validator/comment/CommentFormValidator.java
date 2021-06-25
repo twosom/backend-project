@@ -37,7 +37,5 @@ public class CommentFormValidator implements Validator {
             errors.rejectValue("content", "empty.content", "내용은 필수입니다.");
         }
 
-
-
     }
 }
