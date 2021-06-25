@@ -24,6 +24,8 @@ public class Post {
 
     private String writer;
 
+    private String password;
+
     @CreationTimestamp
     private LocalDateTime createdAt;
 
