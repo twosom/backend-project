@@ -134,7 +134,22 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("postViewDto"))
                 .andExpect(view().name("post/view-post"));
+    }
 
+    @DisplayName("게시글 삭제")
+    @Test
+    void delete_post() throws Exception {
+        create_new_post_with_correct_value();
+        List<Post> postList = postRepository.findAll();
+        assertEquals(postList.size(), 1);
+        Post post = postList.get(0);
+
+        mockMvc.perform(delete("/post/delete/{id}", post.getId()))
+                .andExpect(status().is3xxRedirection())
+                .andExpect(redirectedUrl("/"));
+
+
+        assertNull(post.getContent());
     }
 
 }
