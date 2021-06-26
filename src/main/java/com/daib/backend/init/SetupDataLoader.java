@@ -7,10 +7,12 @@ import com.daib.backend.post.repository.PostRepository;
 import com.daib.backend.post.service.PostService;
 import lombok.RequiredArgsConstructor;
 import org.springframework.context.ApplicationListener;
+import org.springframework.context.annotation.Profile;
 import org.springframework.context.event.ContextRefreshedEvent;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+@Profile("dev")
 @Component
 @RequiredArgsConstructor
 public class SetupDataLoader implements ApplicationListener<ContextRefreshedEvent> {
@@ -40,7 +42,7 @@ public class SetupDataLoader implements ApplicationListener<ContextRefreshedEven
                     CommentForm commentForm = CommentForm.builder()
                             .postId(postId)
                             .writer("another anonymousUser" + j)
-                            .content("test-content" + j)
+                            .content(postForm.getTitle() + "'s comment " + j)
                             .build();
 
                     commentService.createNewComment(commentForm);
