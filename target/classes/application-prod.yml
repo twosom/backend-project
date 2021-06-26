@@ -1,0 +1,8 @@
+spring:
+  datasource:
+    url: ## DB url
+    username: ## DB 계정
+    password: ## DB 패스워드
+    driver-class-name: com.mysql.cj.jdbc.Driver
+
+

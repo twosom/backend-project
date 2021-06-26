@@ -26,7 +26,7 @@ public class PostEditFormValidator implements Validator {
     public void validate(Object o, Errors errors) {
         PostEditForm form = (PostEditForm) o;
 
-        if (!postRepository.existsById(form.getId())) {
+        if (!postRepository.existsByIdAndContentIsNotNull(form.getId())) {
             errors.rejectValue("id", "wrong.request", "잘못된 요청입니다.");
             return;
         }

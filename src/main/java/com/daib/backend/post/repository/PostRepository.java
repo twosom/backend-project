@@ -8,4 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface PostRepository extends JpaRepository<Post, Long> {
 
     Post findByIdAndContentIsNotNull(Long id);
+
+    boolean existsByIdAndContentIsNotNull(Long id);
 }

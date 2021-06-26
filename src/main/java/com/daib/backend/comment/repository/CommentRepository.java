@@ -8,4 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
     Comment findByIdAndContentIsNotNull(Long id);
+
+    boolean existsByIdAndContentIsNotNull(Long id);
 }
