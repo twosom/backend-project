@@ -8,9 +8,9 @@ import com.daib.backend.comment.repository.CommentQueryRepository;
 import com.daib.backend.comment.service.CommentService;
 import com.daib.backend.comment.validator.CommentEditFormValidator;
 import com.daib.backend.comment.validator.CommentFormValidator;
-import com.daib.backend.post.repository.PostRepository;
+import com.fasterxml.jackson.core.JsonProcessingException;
+import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
@@ -18,7 +18,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.validation.Errors;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
-
 
 import javax.validation.Valid;
 import java.util.List;
@@ -36,8 +35,7 @@ public class CommentApiController {
     private final CommentFormValidator commentFormValidator;
     private final CommentEditFormValidator commentEditFormValidator;
 
-    private final PostRepository postRepository;
-    private final ModelMapper modelMapper;
+    private final ObjectMapper objectMapper;
 
 
     @InitBinder("commentForm")
@@ -61,7 +59,7 @@ public class CommentApiController {
 
     @PostMapping("/new")
     public ResponseEntity createNewComment(@Valid @RequestBody CommentForm commentForm,
-                                           Errors errors) {
+                                           Errors errors) throws JsonProcessingException {
         if (errors.hasErrors()) {
             List<String> errorMessages = getErrorMessages(errors);
 
@@ -71,13 +69,14 @@ public class CommentApiController {
         }
 
         Long commentId = commentService.createNewComment(commentForm);
+        String message = commentId + "번 ID 의 댓글이 생성되었습니다.";
         return ResponseEntity
                 .status(HttpStatus.CREATED)
-                .body(commentId + "번 ID 의 댓글이 생성되었습니다.");
+                .body(objectMapper.writeValueAsString(message));
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity viewComment(@PathVariable("id") Long id) {
+    public ResponseEntity viewComment(@PathVariable("id") Long id) throws JsonProcessingException {
         try {
             CommentDto commentDto = commentService.getCommentDto(id);
             return ResponseEntity
@@ -86,12 +85,12 @@ public class CommentApiController {
         } catch (CommentNotFoundException e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
+                    .body(objectMapper.writeValueAsString(e.getMessage()));
         }
     }
 
     @PostMapping("/edit")
-    public ResponseEntity editComment(@Valid @RequestBody CommentEditForm commentEditForm, Errors errors) {
+    public ResponseEntity editComment(@Valid @RequestBody CommentEditForm commentEditForm, Errors errors) throws JsonProcessingException {
         if (errors.hasErrors()) {
             List<String> errorMessages = getErrorMessages(errors);
 
@@ -101,22 +100,24 @@ public class CommentApiController {
         }
 
         commentService.editComment(commentEditForm);
+        String message = commentEditForm.getId() + "에 해당하는 댓글의 수정이 완료되었습니다.";
         return ResponseEntity
                 .status(HttpStatus.OK)
-                .body(commentEditForm.getId() + "에 해당하는 댓글의 수정이 완료되었습니다.");
+                .body(objectMapper.writeValueAsString(message));
     }
 
     @DeleteMapping("/delete/{id}")
-    public ResponseEntity deleteComment(@PathVariable("id") Long id) {
+    public ResponseEntity deleteComment(@PathVariable("id") Long id) throws JsonProcessingException {
         try {
             commentService.deleteComment(id);
+            String message = id + "에 해당하는 댓글의 삭제가 완료되었습니다.";
             return ResponseEntity
                     .status(HttpStatus.OK)
-                    .body(id + "에 해당하는 댓글의 삭제가 완료되었습니다.");
+                    .body(objectMapper.writeValueAsString(message));
         } catch (CommentNotFoundException e) {
             return ResponseEntity
                     .status(HttpStatus.BAD_REQUEST)
-                    .body(e.getMessage());
+                    .body(objectMapper.writeValueAsString(e.getMessage()));
         }
     }
 
