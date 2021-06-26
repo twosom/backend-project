@@ -26,8 +26,8 @@ public class PostService {
         return postRepository.save(post).getId();
     }
 
-    public void editPost(PostEditForm postEditForm, Long postId) {
-        Post findPost = getPostAndValidate(postId);
+    public void editPost(PostEditForm postEditForm) {
+        Post findPost = getPostAndValidate(postEditForm.getId());
         mapper.map(postEditForm, findPost);
     }
 
@@ -45,8 +45,13 @@ public class PostService {
         return mapper.map(post, PostEditForm.class);
     }
 
-    private Post getPostAndValidate(Long id) {
-        return postRepository.findById(id)
-                .orElseThrow(() -> new PostNotFoundException(id + "에 해당하는 게시글이 존재하지 않습니다."));
+    public Post getPostAndValidate(Long id) {
+        Post post = postRepository.findByIdAndContentIsNotNull(id);
+
+        if (post == null) {
+            throw new PostNotFoundException(id + "에 해당하는 게시글이 존재하지 않습니다.");
+        }
+
+        return post;
     }
 }

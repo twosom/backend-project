@@ -6,9 +6,7 @@ import com.daib.backend.post.form.PostEditForm;
 import com.daib.backend.post.form.PostForm;
 import com.daib.backend.post.service.PostService;
 import com.daib.backend.post.validator.PostEditFormValidator;
-import com.daib.backend.post.validator.PostFormValidator;
 import lombok.RequiredArgsConstructor;
-import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.Errors;
@@ -22,14 +20,8 @@ import javax.validation.Valid;
 public class PostController {
 
     private final PostService postService;
-    private final ModelMapper modelMapper;
     private final PostEditFormValidator postEditFormValidator;
 
-
-    @InitBinder("postForm")
-    public void postFormInitBinder(WebDataBinder webDataBinder) {
-        webDataBinder.addValidators(new PostFormValidator());
-    }
 
     @InitBinder("postEditForm")
     public void postEditFormInitBinder(WebDataBinder webDataBinder) {
@@ -44,7 +36,6 @@ public class PostController {
         model.addAttribute(new CommentForm());
         return "post/view-post";
     }
-
 
 
     @GetMapping("/post/new")
@@ -74,16 +65,15 @@ public class PostController {
         return "post/edit-post";
     }
 
-    @PostMapping("/post/edit/{id}")
-    public String editPost(@PathVariable("id") Long id,
-                           @Valid PostEditForm postEditForm,
+    @PostMapping("/post/edit")
+    public String editPost(@Valid PostEditForm postEditForm,
                            Errors errors) {
         if (errors.hasErrors()) {
             return "post/edit-post";
         }
 
-        postService.editPost(postEditForm, id);
-        return "redirect:/post/" + id;
+        postService.editPost(postEditForm);
+        return "redirect:/post/" + postEditForm.getId();
     }
 
     @DeleteMapping("/post/delete/{id}")

@@ -7,4 +7,5 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional(readOnly = true)
 public interface CommentRepository extends JpaRepository<Comment, Long> {
 
+    Comment findByIdAndContentIsNotNull(Long id);
 }

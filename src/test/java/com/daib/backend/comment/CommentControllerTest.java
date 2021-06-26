@@ -115,7 +115,7 @@ class CommentControllerTest {
         assertNotNull(comment);
 
 
-        mockMvc.perform(post("/comment/edit/{id}", comment.getId())
+        mockMvc.perform(post("/comment/edit")
                 .param("id", comment.getId().toString())
                 .param("writer", "another anonymous")
                 .param("content", "edited content"))
@@ -133,7 +133,7 @@ class CommentControllerTest {
         assertNotNull(comment);
 
 
-        mockMvc.perform(post("/comment/edit/{id}", comment.getId())
+        mockMvc.perform(post("/comment/edit")
                 .param("id", "123")
                 .param("writer", "another anonymous")
                 .param("content", "edited content"))

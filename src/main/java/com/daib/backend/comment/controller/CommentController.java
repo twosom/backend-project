@@ -1,14 +1,13 @@
 package com.daib.backend.comment.controller;
 
-import com.daib.backend.comment.domain.Comment;
-import com.daib.backend.post.domain.Post;
-import com.daib.backend.post.dto.PostViewDto;
 import com.daib.backend.comment.form.CommentEditForm;
 import com.daib.backend.comment.form.CommentForm;
-import com.daib.backend.post.repository.PostRepository;
 import com.daib.backend.comment.service.CommentService;
 import com.daib.backend.comment.validator.CommentEditFormValidator;
 import com.daib.backend.comment.validator.CommentFormValidator;
+import com.daib.backend.post.domain.Post;
+import com.daib.backend.post.dto.PostViewDto;
+import com.daib.backend.post.repository.PostRepository;
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;
 import org.springframework.stereotype.Controller;
@@ -62,13 +61,13 @@ public class CommentController {
         return "comment/edit-comment";
     }
 
-    @PostMapping("/comment/edit/{id}")
-    public String editComment(@PathVariable("id") Long id, @Valid CommentEditForm commentEditForm, Errors errors) {
+    @PostMapping("/comment/edit")
+    public String editComment(@Valid CommentEditForm commentEditForm, Errors errors) {
         if (errors.hasErrors()) {
             return "comment/edit-comment";
         }
 
-        Long postId = commentService.editComment(commentEditForm, id);
+        Long postId = commentService.editComment(commentEditForm);
         return "redirect:/post/" + postId;
     }
 

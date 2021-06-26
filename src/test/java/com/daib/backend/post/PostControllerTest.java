@@ -2,6 +2,7 @@ package com.daib.backend.post;
 
 import com.daib.backend.comment.repository.CommentRepository;
 import com.daib.backend.post.domain.Post;
+import com.daib.backend.post.exception.PostNotFoundException;
 import com.daib.backend.post.repository.PostRepository;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
@@ -93,7 +94,8 @@ class PostControllerTest {
 
 
         mockMvc.perform(
-                post("/post/edit/{id}", post.getId())
+                post("/post/edit")
+                        .param("id", post.getId().toString())
                         .param("title", "edited-title")
                         .param("content", "edited-content")
                         .param("writer", "anonymous")
@@ -116,7 +118,8 @@ class PostControllerTest {
 
 
         mockMvc.perform(
-                post("/post/edit/{id}", post.getId())
+                post("/post/edit")
+                        .param("id", post.getId().toString())
                         .param("title", "edited-title")
                         .param("content", "edited-content")
                         .param("writer", "anonymous")
@@ -127,10 +130,9 @@ class PostControllerTest {
     }
 
 
-    @DisplayName("게시글 조회")
+    @DisplayName("게시글 조회 - 성공")
     @Test
-    void view_post() throws Exception {
-        //TODO 예외 만들고 나서 조회 실패 테스트도 하기
+    void view_post_success() throws Exception {
         create_new_post_with_correct_value();
         List<Post> postList = postRepository.findAll();
         assertEquals(postList.size(), 1);
@@ -140,6 +142,19 @@ class PostControllerTest {
                 .andExpect(status().isOk())
                 .andExpect(model().attributeExists("postViewDto"))
                 .andExpect(view().name("post/view-post"));
+    }
+
+    @DisplayName("게시글 조회 - 실패")
+    @Test
+    void view_post_failed() throws Exception {
+
+        int id = 999;
+        org.assertj.core.api.Assertions.assertThatThrownBy(
+                () -> {
+                    mockMvc.perform(get("/post/{id}", id));
+                })
+                .hasCause(new PostNotFoundException(id + "에 해당하는 게시글이 존재하지 않습니다."));
+
     }
 
     @DisplayName("게시글 삭제")

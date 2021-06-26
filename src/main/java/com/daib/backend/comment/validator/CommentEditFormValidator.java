@@ -25,7 +25,7 @@ public class CommentEditFormValidator implements Validator {
         CommentEditForm form = (CommentEditForm) o;
 
         if (!commentRepository.existsById(form.getId())) {
-            errors.rejectValue("writer", "wrong.request", "잘못된 요청입니다.");
+            errors.rejectValue("id", "wrong.request", "잘못된 요청입니다.");
         }
     }
 }
